@@ -1,0 +1,80 @@
+<html>
+<head>
+	<link href="../c3/c3.min.css" rel="stylesheet" type="text/css">
+	<script src="https://d3js.org/d3.v3.min.js"></script>
+	<script src="../c3/c3.min.js"></script>
+</head>
+<body>
+	<h1> AppD Bangalore: Net Speed </h1>
+	<div id="chart"></div>
+</body>
+<script type="text/javascript">
+	function d3GenerateGraph(){
+		d3.csv("NetSpeedTimeLog.csv", function(d) {
+	  		return {
+			    date : d.date.substring(0, d.date.length-7),
+			    download : d.download.replace(" Mb/s",""),
+			    upload : d.upload.replace(" Mb/s","")
+	  		};
+		}, function(data) {
+			console.log(data);
+			generateChart("#chart", data);
+		});
+
+		function generateChart(div, data){
+			var chart = c3.generate({
+				bindto: div,
+
+			    data: {
+			    	x: 'date',
+			    	xFormat: '%Y-%m-%dT%H:%M:%S',
+			        json: data,
+			        type: 'line',
+			        keys: {
+			        	x: 'date',
+			        	value: ['download', 'upload']
+			        }
+			    },
+			    axis:{
+				    x: {
+			        	type: 'timeseries', //date format in CSV file needs to be 2000-06-14
+			        	tick: {
+			                format: '%m-%d %H:%M'
+			            }
+			    	}
+		    	},
+		    	zoom: {
+		        	enabled: true
+		    	},
+		    	subchart: {
+		    		show: true
+		    	},
+			tooltip: {
+				grouped: true,
+				format: {
+					value: function(value,ratio,id,index) {
+						if (id === 'download')
+							return data[index]['download']+' Mb/s';
+						else if (id ==='upload')
+							return data[index]['upload']+' Mb/s';
+					},
+					name: function(name, ratio, id, index){
+						if (id === 'download')
+							return 'download';
+						else if (id ==='upload')
+							return 'upload';
+					}
+					
+				}
+				
+			}
+			});	
+		}
+	}
+	d3GenerateGraph();
+	var time = 5000*60;
+	setInterval(function(){
+		d3GenerateGraph();
+	}, time);
+</script>
+</html>
