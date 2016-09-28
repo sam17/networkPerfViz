@@ -17,5 +17,9 @@ Net Speed Visualization
 ![Git Pull Speed Visualization](./img/PullSpeed.jpg)  
 Git Pull Speed Visualization
 
+##Contributors
+1. [Shubham Jindal](skjindal93)
+2. [Soumyadeep Mukherjee](sam17)
+
 
 
