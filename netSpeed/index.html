@@ -74,10 +74,10 @@
 		}
 	}
 	d3GenerateGraph();
-//	var time = 5000*60;
-//	setInterval(function(){
-//		d3GenerateGraph();
-//	}, time);
+	var time = 5000*60;
+	setInterval(function(){
+		d3GenerateGraph();
+	}, time);
 </script>
 <script type="text/javascript">
 	function d3GenerateGraph2(){
@@ -85,7 +85,8 @@
 	  		return {
 			    date : d.date.substring(0, d.date.length-7),
 			    tata : d.tata,
-			    airtel : d.airtel
+			    airtel : d.airtel,
+	                    wifi : d.wifi
 	  		};
 		}, function(data) {
 			console.log(data);
@@ -103,7 +104,7 @@
 			        type: 'line',
 			        keys: {
 			        	x: 'date',
-			        	value: ['tata', 'airtel']
+			        	value: ['tata', 'airtel','wifi']
 			        }
 			    },
 			    axis:{
@@ -128,12 +129,16 @@
 							return data[index]['tata']+' ms';
 						else if (id ==='airtel')
 							return data[index]['airtel']+' ms';
+	                                        else if (id=='wifi')
+	                                                return data[index]['wifi']+' ms';
 					},
 					name: function(name, ratio, id, index){
 						if (id === 'tata')
 							return 'tata';
 						else if (id ==='airtel')
 							return 'airtel';
+	                                        else if (id=='wifi')
+	                                                return 'wifi';
 					}
 					
 				}
@@ -143,10 +148,10 @@
 		}
 	}
 	d3GenerateGraph2();
-//	var time = 5000*60;
-//	setInterval(function(){
-//		d3GenerateGraph();
-//	}, time);
+	var time = 5000*60;
+	setInterval(function(){
+		d3GenerateGraph2();
+	}, time);
 </script>
 
 </html>
