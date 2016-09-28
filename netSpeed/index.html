@@ -7,6 +7,8 @@
 <body>
 	<h1> AppD Bangalore: Net Speed </h1>
 	<div id="chart"></div>
+	<h1> AppD Bangalore: Ping Time </h1>
+	<div id="ping_chart"></div>
 </body>
 <script type="text/javascript">
 	function d3GenerateGraph(){
@@ -72,9 +74,79 @@
 		}
 	}
 	d3GenerateGraph();
-	var time = 5000*60;
-	setInterval(function(){
-		d3GenerateGraph();
-	}, time);
+//	var time = 5000*60;
+//	setInterval(function(){
+//		d3GenerateGraph();
+//	}, time);
 </script>
+<script type="text/javascript">
+	function d3GenerateGraph2(){
+		d3.csv("PingTimeLog.csv", function(d) {
+	  		return {
+			    date : d.date.substring(0, d.date.length-7),
+			    tata : d.tata,
+			    airtel : d.airtel
+	  		};
+		}, function(data) {
+			console.log(data);
+			generateChart2("#ping_chart", data);
+		});
+
+		function generateChart2(div, data){
+			var chart = c3.generate({
+				bindto: div,
+
+			    data: {
+			    	x: 'date',
+			    	xFormat: '%Y-%m-%dT%H:%M:%S',
+			        json: data,
+			        type: 'line',
+			        keys: {
+			        	x: 'date',
+			        	value: ['tata', 'airtel']
+			        }
+			    },
+			    axis:{
+				    x: {
+			        	type: 'timeseries', //date format in CSV file needs to be 2000-06-14
+			        	tick: {
+			                format: '%m-%d %H:%M'
+			            }
+			    	}
+		    	},
+		    	zoom: {
+		        	enabled: true
+		    	},
+		    	subchart: {
+		    		show: true
+		    	},
+			tooltip: {
+				grouped: true,
+				format: {
+					value: function(value,ratio,id,index) {
+						if (id === 'tata')
+							return data[index]['tata']+' ms';
+						else if (id ==='airtel')
+							return data[index]['airtel']+' ms';
+					},
+					name: function(name, ratio, id, index){
+						if (id === 'tata')
+							return 'tata';
+						else if (id ==='airtel')
+							return 'airtel';
+					}
+					
+				}
+				
+			}
+			});	
+		}
+	}
+	d3GenerateGraph2();
+//	var time = 5000*60;
+//	setInterval(function(){
+//		d3GenerateGraph();
+//	}, time);
+</script>
+
 </html>
